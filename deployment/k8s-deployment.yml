@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: simpe-app
+  name: simple-app-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-app
+  template:
+    metadata:
+      labels:
+        app: simple-app
+    spec:
+      containers:
+        - image: dhforngs/simple-app-example
+          imagePullPolicy: Always
+          name: simple-app
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-app-svc
+spec:
+  selector:
+    app: simple-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
